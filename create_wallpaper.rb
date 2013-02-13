@@ -9,17 +9,19 @@ bg = 'black'
 fg = 'white'
 path_to_wallpaper = '/home/skelz0r/'
 file_name = "final_countdown.png"
-space = 80
+space = 200
 
 f = Image.new(w, h) { self.background_color = 'black' }
+shutdown = Image.read("stuffs/shutdown.jpg").first
+
+shutdown.resize_to_fit!(0,(h/3)-30)
 
 text = Magick::Draw.new
-text.font_family = 'helvetica'
+text.font = 'stuffs/chintzy.ttf'
 text.pointsize = 100
 text.gravity = Magick::CenterGravity
 text.font_weight = BoldWeight
 text.font_stretch = ExpandedStretch
-
 
 text.annotate(f, 0,0,2,-1*space, "10 000 000 users") {
 	self.fill = fg
@@ -31,6 +33,8 @@ text.annotate(f, 0,0,2,space, "D - #{((countdown-now)/(60*60*24)).to_i.to_s}") {
 	self.fill = fg
 }
 
-f.write(path_to_wallpaper + file_name)
+final_img = f.composite(shutdown, Magick::CenterGravity, Magick::OverCompositeOp)
+
+final_img.write(path_to_wallpaper + file_name)
 #f.display
 exit
